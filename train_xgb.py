@@ -63,7 +63,11 @@ best_model = grid_search.best_estimator_
 
 # Predict and evaluate
 r = best_model.predict(X_test)
+# Older versions of scikit-learn may not support the ``squared``
+# argument for ``mean_squared_error``. Compute RMSE manually for
+# compatibility.
 rmse = mean_squared_error(y_test, r, squared=False)
+
 r2 = r2_score(y_test, r)
 
 print("Best parameters:", grid_search.best_params_)
