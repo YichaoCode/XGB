@@ -13,6 +13,10 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import mean_squared_error, r2_score
 import warnings
 
+import warnings
+# 忽略来自 xgboost.core 的 FutureWarning
+warnings.filterwarnings("ignore", category=FutureWarning, module="xgboost.core")
+
 warnings.filterwarnings(
     "ignore",
     message=".*glibc.*",
