@@ -1,15 +1,25 @@
+import warnings
+
+# Suppress the repeated FutureWarning from xgboost about glibc
+warnings.filterwarnings(
+    "ignore", category=FutureWarning, module="xgboost.core"
+)
+warnings.filterwarnings(
+    "ignore", message=".*glibc.*", category=FutureWarning, module="xgboost.core"
+)
+
 import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import mean_squared_error, r2_score
 import warnings
 
-# Suppress the glibc FutureWarning from xgboost
 warnings.filterwarnings(
     "ignore",
     message=".*glibc.*",
     category=FutureWarning,
     module="xgboost.core",
 )
+
 from xgboost import XGBRegressor
 
 # Load dataset
@@ -56,7 +66,8 @@ r = best_model.predict(X_test)
 # Older versions of scikit-learn may not support the ``squared``
 # argument for ``mean_squared_error``. Compute RMSE manually for
 # compatibility.
-rmse = mean_squared_error(y_test, r) ** 0.5
+rmse = mean_squared_error(y_test, r, squared=False)
+
 r2 = r2_score(y_test, r)
 
 print("Best parameters:", grid_search.best_params_)
