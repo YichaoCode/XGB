@@ -21,9 +21,11 @@ model = XGBRegressor(objective='reg:squarederror', random_state=42)
 model.fit(X_train, y_train)
 
 # Predict and evaluate
-preds = model.predict(X_test)
-rmse = mean_squared_error(y_test, preds, squared=False)
-r2 = r2_score(y_test, preds)
-
+r = model.predict(X_test)
+# Older versions of scikit-learn do not support the ``squared``
+# argument for ``mean_squared_error``. Compute RMSE manually for
+# compatibility.
+rmse = mean_squared_error(y_test, r) ** 0.5
+r2 = r2_score(y_test, r)
 print(f'RMSE: {rmse:.4f}')
 print(f'R^2: {r2:.4f}')
